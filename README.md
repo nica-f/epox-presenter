@@ -10,8 +10,10 @@ now.
 I have updated the autoconf files to work with a current Debian system
 (Debain 9 as of now), the usual triple should work on most systems:
 
-# ./configure
-# make
-# make install
+```
+./configure
+make
+make install
+```
 
 Enjoy!
