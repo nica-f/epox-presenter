@@ -1,0 +1,17 @@
+#
+# plain Makefile, without autotools, in case configure fails
+#
+VER=\"0.4nf\"
+CFLAGS=-Wall -O2 -DVERSION=$(VER)
+LDFLAGS=-lX11 -lXtst -lbluetooth -lm
+SRC=main.c
+OBJ=main.o
+EXE=epox-presenter
+
+all: $(EXE)
+
+$(EXE): $(OBJ)
+	$(CC) -o $(EXE) $(OBJ) $(LDFLAGS)
+
+clean:
+	rm -f $(OBJ) $(EXE)

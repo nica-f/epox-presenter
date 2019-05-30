@@ -1,0 +1,78 @@
+dnl
+dnl  $Id: configure.in,v 1.24 2003/03/31 10:07:06 holtmann Exp $
+dnl
+dnl Process this file with autoconf to produce a configure script.
+dnl
+AC_INIT()
+
+dnl Guess host type.
+AC_CANONICAL_SYSTEM
+
+AM_MAINTAINER_MODE
+
+AM_INIT_AUTOMAKE(epox-presenter, 0.4)
+
+AC_PREFIX_DEFAULT(/usr)
+
+CFLAGS="-Wall -g -O2"
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_CHECK_TOOL(LD, ld, ld)
+AC_CHECK_TOOL(AR, ar, ar)
+
+AM_PROG_LIBTOOL
+
+AC_ARG_WITH(bluez-libs,
+	[  --with-bluez-libs=DIR   BlueZ libraries],
+	BLUEZ_LIBDIR="$withval",
+	BLUEZ_LIBDIR='../libs/src /usr/lib'
+)
+
+AC_ARG_WITH(bluez-incs,
+	[  --with-bluez-incs=DIR   BlueZ header files],
+	BLUEZ_INCDIR="$withval",
+	BLUEZ_INCDIR='../libs/include /usr/include'
+)
+
+dnl AC_ARG_WITH(sdp-libs,
+dnl 	[  --with-sdp-libs=DIR     SDP libraries],
+dnl 	SDP_LIBDIR="$withval",
+dnl 	SDP_LIBDIR='../sdp/libs /usr/lib'
+dnl )
+
+AC_ARG_WITH(sdp-incs,
+	[  --with-sdp-incs=DIR     SDP header files],
+	SDP_INCDIR="$withval",
+	SDP_INCDIR='../sdp/include /usr/include'
+)
+
+AC_SEARCH_HEADERS(bluetooth/bluetooth.h, $BLUEZ_INCDIR,,
+	AC_MSG_ERROR(Bluetooth headers not found.
+		Please install bluez-libs package.)
+)
+
+AC_SEARCH_LIB(bluetooth, hci_open_dev, $BLUEZ_LIBDIR,,
+	AC_MSG_ERROR(Bluetooth library not found.
+		Please compile and install bluez-libs package.)
+)
+
+AC_SEARCH_HEADERS(bluetooth/sdp.h, $SDP_INCDIR,,
+	AC_MSG_ERROR(SDP headers not found.
+		Please install bluez-libs package.)
+)
+
+dnl AC_SEARCH_LIB(sdp, sdp_uuid16_create, $SDP_LIBDIR,,
+dnl 	AC_MSG_ERROR(SDP library not found.
+dnl 		Please compile and install bluez-sdp package.)
+dnl )
+
+AC_SEARCH_HEADERS(X11/Xlib.h, /usr/include,,
+	AC_MSG_ERROR(X11 headers not found.)
+)
+
+AC_SEARCH_HEADERS(X11/extensions/XTest.h, /usr/include,,
+	AC_MSG_ERROR(XTest headers not found.)
+)
+
+AC_OUTPUT(Makefile src/Makefile)
